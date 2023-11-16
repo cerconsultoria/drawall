@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drawall - Example</title>
+
+</head>
+<body>
+
+    <script type="module">
+        const {default: Drawall, Toolbar, ToolbarItemAbstract} = drawall;
+        const { mainState } = Drawall;
+        console.log(mainState)
+        console.log(Toolbar, ToolbarItemAbstract);
+
+        class SelectToolbarItem extends ToolbarItemAbstract {
+            constructor(){
+                super("Select", "https://cdn-icons-png.flaticon.com/512/1536/1536384.png")
+            }
+
+            onClick(evt, prop){
+                const state = prop.get();
+                state.stage.draggable(false);
+            }
+        }
+
+        class GrabToolbarItem extends ToolbarItemAbstract {
+            constructor(){
+                super("Grab", "https://static-00.iconduck.com/assets.00/cursor-grab-icon-1006x1024-28w5ux8j.png")
+            }
+
+            onClick(evt, prop){
+                const state = prop.get();
+                state.stage.draggable(true);
+            }
+        }
+
+        const selectToolbarItem = new SelectToolbarItem();
+        const grabToolbarItem = new GrabToolbarItem();
+
+        const toolbar = new Toolbar();
+        toolbar.addItem(selectToolbarItem)
+        toolbar.addItem(grabToolbarItem)
+
+        mainState.subscribe((a) => console.log(a));
+        const container = mainState.getState().init({
+            width: 5000,
+            height: 5000,
+            toolbar
+        });
+        document.body.appendChild(container)
+    </script>
+</body>
+</html>
